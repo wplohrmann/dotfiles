@@ -1,0 +1,8 @@
+"\e[1;5C": forward-word
+"\e[1;5D": backward-word
+
+"\e[1;5A": history-search-backward
+"\e[1;5B": history-search-forward
+
+"^W": shell-backward-kill-word
+
