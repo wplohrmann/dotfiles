@@ -123,5 +123,10 @@ export NVM_DIR="$HOME/.nvm"
 export GIT_PS1_SHOWDIRTYSTATE=1
 PS1='\w\[\033[01;33m\]$(__git_ps1)\[\033[01;34m\] \$\[\033[00m\] '
 
+function tgit() 
+{
+    tmux split-window -h "$@"
+}
 
-alias tgit='tmux split-window -h "git"'
+
+alias tmux='TERM=xterm-256color tmux'
