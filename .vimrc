@@ -19,13 +19,16 @@ so ~/.vim/plugins.vim
 map <C-o> :NERDTreeToggle<CR>
 
 "Insert single character
-nnoremap <Space> i_<Esc>r
+nnoremap <Space> i
 
 "Change tabs:
-map [5;5~ gT
-map [6;5~ gt
-
+nnoremap [5;5~ gT
+nnoremap [6;5~ gt
+inoremap [5;5~ <Esc>
+inoremap [6;5~ <Esc>
 
 "Map forward/backword words:
-map [1;5C w
-map [1;5D b
+nnoremap [1;5C w
+nnoremap [1;5D b
+inoremap [1;5C <Esc>
+inoremap [1;5D <Esc>
