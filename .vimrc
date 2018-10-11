@@ -18,14 +18,14 @@ so ~/.vim/plugins.vim
 "Nerdtree: 
 map <C-o> :NERDTreeToggle<CR>
 
-"Insert single character
+"Enter insert mode
 nnoremap <Space> i
 
 "Change tabs:
 nnoremap [5;5~ gT
 nnoremap [6;5~ gt
-inoremap [5;5~ <Esc>
-inoremap [6;5~ <Esc>
+"inoremap [5;5~ <Esc>
+"inoremap [6;5~ <Esc>
 
 "Map forward/backword words:
 nnoremap [1;5C w
