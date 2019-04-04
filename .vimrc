@@ -32,3 +32,11 @@ nnoremap [1;5C w
 nnoremap [1;5D b
 inoremap [1;5C <Esc>
 inoremap [1;5D <Esc>
+
+"Map ENTER in normal mode to save
+nnoremap <CR> :w<CR>
+
+"Recognize .CPP files
+autocmd BufNewFile,BufRead *.CPP set syntax=cpp
+
+set showtabline=2
