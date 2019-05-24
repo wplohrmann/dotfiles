@@ -40,3 +40,6 @@ nnoremap <CR> :w<CR>
 autocmd BufNewFile,BufRead *.CPP set syntax=cpp
 
 set showtabline=2
+
+set list!
+set listchars=tab:>-,trail:~
