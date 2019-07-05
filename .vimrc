@@ -24,8 +24,7 @@ nnoremap <Space> i
 "Change tabs:
 nnoremap [5;5~ gT
 nnoremap [6;5~ gt
-"inoremap [5;5~ <Esc>
-"inoremap [6;5~ <Esc>
+set tabpagemax=100
 
 "Map forward/backword words:
 nnoremap [1;5C w
@@ -41,5 +40,13 @@ autocmd BufNewFile,BufRead *.CPP set syntax=cpp
 
 set showtabline=2
 
+"Show trailing whitespace
 set list!
 set listchars=tab:>-,trail:~
+
+"Enable folds by default
+set foldmethod=syntax
+set foldlevel=99
+
+"Select last pasted text
+nnoremap gp `[v`]
