@@ -13,11 +13,6 @@ inoremap <S-Tab> <C-d>
 "Make vim recognize aliases
 set shellcmdflag=-ic
 
-so ~/.vim/plugins.vim
-
-"Nerdtree: 
-map <C-o> :NERDTreeToggle<CR>
-
 "Enter insert mode
 nnoremap <Space> i
 
@@ -48,5 +43,10 @@ set listchars=tab:>-,trail:~
 set foldmethod=syntax
 set foldlevel=99
 
-"Select last pasted text
-nnoremap gp `[v`]
+"Send current line to tmux pane
+function SendLine()
+    let foo = getline(getcurpos()[1])
+    call system("tmux send-keys -t 1 '" . foo . "' Enter")
+endfunction
+
+noremap s :call SendLine()<CR>
