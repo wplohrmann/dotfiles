@@ -10,6 +10,9 @@ filetype indent on
 
 inoremap <S-Tab> <C-d>
 
+"Tabnine
+set rtp+=~/src/tabnine-vim
+
 "Make vim recognize aliases
 set shellcmdflag=-ic
 
@@ -46,7 +49,7 @@ set foldlevel=99
 "Send current line to tmux pane
 function SendLine()
     let foo = getline(getcurpos()[1])
-    call system("tmux send-keys -t 1 '" . foo . "' Enter")
+    call system("tmux send-keys -t ! '" . foo . "' Enter")
 endfunction
 
 noremap s :call SendLine()<CR>
