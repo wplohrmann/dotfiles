@@ -136,3 +136,5 @@ function vimgrep()
 {
     vim -p $(git grep -l "$@")
 }
+
+export EDITOR=vim
