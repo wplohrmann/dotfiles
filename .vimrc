@@ -8,7 +8,6 @@ set shiftwidth=4
 set number
 filetype indent on
 
-inoremap <S-Tab> <C-d>
 
 "Tabnine
 set rtp+=~/src/tabnine-vim
