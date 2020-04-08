@@ -8,6 +8,21 @@ set shiftwidth=4
 set number
 filetype indent on
 
+"VimPlug
+ if empty(glob('~/.vim/autoload/plug.vim'))
+   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+   autocmd VimEnter * PlugInstall --sync | source ~/.vimrc
+endif
+
+call plug#begin("~/.vim/plugged")
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'easymotion/vim-easymotion'
+call plug#end()
+
+nmap , <Leader>
+map <Leader> <Plug>(easymotion-prefix)
 
 "Tabnine
 set rtp+=~/src/tabnine-vim
