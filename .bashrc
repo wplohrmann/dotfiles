@@ -138,3 +138,8 @@ function vimgrep()
 }
 
 export EDITOR=vim
+PYTHONDONTWRITEBYTECODE="no, thank you"
+
+if [ -f ~/.passwords ]; then
+    source ~/.passwords
+fi
