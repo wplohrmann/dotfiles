@@ -13,9 +13,6 @@ inoremap <S-Tab> <C-d>
 "Tabnine
 set rtp+=~/src/tabnine-vim
 
-"Make vim recognize aliases
-set shellcmdflag=-ic
-
 "Enter insert mode
 nnoremap <Space> i
 
@@ -23,12 +20,6 @@ nnoremap <Space> i
 nnoremap [5;5~ gT
 nnoremap [6;5~ gt
 set tabpagemax=100
-
-"Map forward/backword words:
-nnoremap [1;5C w
-nnoremap [1;5D b
-inoremap [1;5C <Esc>
-inoremap [1;5D <Esc>
 
 "Map ENTER in normal mode to save
 nnoremap <CR> :w<CR>
@@ -53,3 +44,15 @@ function SendLine()
 endfunction
 
 noremap s :call SendLine()<CR>
+
+"Send current line to tmux pane without indentation
+function SendLineWithoutIndent()
+    let foo = join(split(getline(getcurpos()[1])))
+    call system("tmux send-keys -t ! '" . foo . "' Enter")
+endfunction
+
+noremap S :call SendLineWithoutIndent()<CR>
+
+function Pdb()
+    execute "normal! oimport pdb; pdb.set_trace()"
+endfunction
