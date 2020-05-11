@@ -131,10 +131,10 @@ function tgit()
 
 alias tmux='TERM=xterm-color tmux'
 
-alias vimresolve='vim -p $(git diff --name-only | uniq)'
+alias vimresolve='vim $(git diff --name-only | uniq)'
 function vimgrep()
 {
-    vim -p $(git grep -l "$@")
+    vim $(git grep -l "$@")
 }
 
 export EDITOR=vim

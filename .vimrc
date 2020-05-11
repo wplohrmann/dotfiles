@@ -19,29 +19,63 @@ call plug#begin("~/.vim/plugged")
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'easymotion/vim-easymotion'
+Plug 'tpope/vim-fugitive'
+Plug 'vim-airline/vim-airline'
+Plug 'lervag/vimtex'
+Plug 'sirver/ultisnips'
+Plug 'davidhalter/jedi-vim'
 call plug#end()
 
+"vimtex setup
+let g:tex_flavor='latex'
+let g:vimtex_view_method='zathura'
+let g:vimtex_quickfix_mode=0
+
+"Ultisnips setup
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+
+"Comment lines with one key stroke
+nmap # gcc
+vmap # gc
+
 nmap , <Leader>
-map <Leader> <Plug>(easymotion-prefix)
+nmap f <Leader><Leader>f
+nmap F <Leader><Leader>F
+nmap t <Leader><Leader>t
+nmap T <Leader><Leader>T
+
+"Show possible autocompletions in command mode
+set wildmenu
+
+"Vim-jedi configs
+let g:jedi#popup_on_dot=0
+let g:jedi#popup_select_first=0
+let g:jedi#completions_command=""
+
+"Cycle through buffers
+nnoremap l :bnext<CR>
+nnoremap h :bprev<CR>
+nnoremap j :ls<CR>:b
+
+"All of the colours
+set t_Co=256
+
+"Airline options
+let g:airline#extensions#tabline#enabled = 1
 
 "Tabnine
-set rtp+=~/src/tabnine-vim
+" set rtp+=~/src/tabnine-vim
 
 "Enter insert mode
 nnoremap <Space> i
-
-"Change tabs:
-nnoremap [5;5~ gT
-nnoremap [6;5~ gt
-set tabpagemax=100
 
 "Map ENTER in normal mode to save
 nnoremap <CR> :w<CR>
 
 "Recognize .CPP files
 autocmd BufNewFile,BufRead *.CPP set syntax=cpp
-
-set showtabline=2
 
 "Show trailing whitespace
 set list!
