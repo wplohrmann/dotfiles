@@ -142,3 +142,4 @@ if [ -f ~/.passwords ]; then
     source ~/.passwords
 fi
 alias dev='tmux new-session \; split-window -v \; send-keys "source venv/bin/activate" enter C-l'
+alias git-recent='for branch in `git branch -r | grep -v HEAD`;do echo -e `git show --format="%ci %cr" $branch | head -n 1` \\t$branch; done | sort -r'

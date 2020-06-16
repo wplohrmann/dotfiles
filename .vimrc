@@ -23,18 +23,15 @@ Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'lervag/vimtex'
 Plug 'sirver/ultisnips'
-Plug 'davidhalter/jedi-vim'
+Plug 'leafgarland/typescript-vim'
+Plug 'ycm-core/YouCompleteMe'
+Plug 'AndrewRadev/sideways.vim'
 call plug#end()
 
 "vimtex setup
 let g:tex_flavor='latex'
 let g:vimtex_view_method='zathura'
 let g:vimtex_quickfix_mode=0
-
-"Ultisnips setup
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
 "Comment lines with one key stroke
 nmap # gcc
@@ -46,27 +43,48 @@ nmap F <Leader><Leader>F
 nmap t <Leader><Leader>t
 nmap T <Leader><Leader>T
 
+nnoremap <Leader>f f
+nnoremap <Leader>f f
+nnoremap <Leader>t t
+nnoremap <Leader>T T
+
+"For consistency with D and C
+nmap Y y$
+
 "Show possible autocompletions in command mode
 set wildmenu
+set path +=**
 
-"Vim-jedi configs
-let g:jedi#popup_on_dot=0
-let g:jedi#popup_select_first=0
-let g:jedi#completions_command=""
-
+"YouCompleteMe Shortcuts
+nmap <Leader>g :YcmCompleter GoTo<CR>
+nmap <Leader>r :YcmCompleter GoToReferences<CR>
+nmap <Leader>t :YcmCompleter GetType<CR>
+nmap <Leader>d :YcmCompleter GetDoc<CR>
+nmap <Leader>f :YcmCompleter Format<CR>
+nmap <Leader>h :YcmCompleter FixIt<CR>
+let g:ycm_show_diagnostics_ui = 0
 "Cycle through buffers
 nnoremap l :bnext<CR>
 nnoremap h :bprev<CR>
-nnoremap j :ls<CR>:b
 
 "All of the colours
 set t_Co=256
+set background=dark
+color pablo
 
 "Airline options
 let g:airline#extensions#tabline#enabled = 1
 
 "Tabnine
 " set rtp+=~/src/tabnine-vim
+
+"sidways.vim remaps
+nnoremap <c-h> :SidewaysLeft<cr>
+nnoremap <c-l> :SidewaysRight<cr>
+omap aa <Plug>SidewaysArgumentTextobjA
+xmap aa <Plug>SidewaysArgumentTextobjA
+omap ia <Plug>SidewaysArgumentTextobjI
+xmap ia <Plug>SidewaysArgumentTextobjI
 
 "Enter insert mode
 nnoremap <Space> i
@@ -86,7 +104,7 @@ set foldmethod=syntax
 set foldlevel=99
 
 "Send current line to tmux pane
-function SendLine()
+function! SendLine()
     let foo = getline(getcurpos()[1])
     call system("tmux send-keys -t ! '" . foo . "' Enter")
 endfunction
@@ -94,13 +112,9 @@ endfunction
 noremap s :call SendLine()<CR>
 
 "Send current line to tmux pane without indentation
-function SendLineWithoutIndent()
+function! SendLineWithoutIndent()
     let foo = join(split(getline(getcurpos()[1])))
     call system("tmux send-keys -t ! '" . foo . "' Enter")
 endfunction
 
 noremap S :call SendLineWithoutIndent()<CR>
-
-function Pdb()
-    execute "normal! oimport pdb; pdb.set_trace()"
-endfunction
