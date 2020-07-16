@@ -143,3 +143,11 @@ if [ -f ~/.passwords ]; then
 fi
 alias dev='tmux new-session \; split-window -v \; send-keys "source venv/bin/activate" enter C-l'
 alias git-recent='for branch in `git branch -r | grep -v HEAD`;do echo -e `git show --format="%ci %cr" $branch | head -n 1` \\t$branch; done | sort -r'
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+export ANDROID_HOME=$HOME/Android/Sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/tools/bin
+export PATH=$PATH:$ANDROID_HOME/platform-tools
