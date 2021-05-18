@@ -25,9 +25,11 @@ Plug 'lervag/vimtex'
 Plug 'sirver/ultisnips'
 Plug 'leafgarland/typescript-vim'
 Plug 'AndrewRadev/sideways.vim'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
+
+autocmd BufNewFile,BufRead *.tsx setlocal tabstop=2
+autocmd BufNewFile,BufRead *.tsx setlocal shiftwidth=2
 
 "vimtex setup
 let g:tex_flavor='latex'

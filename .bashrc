@@ -128,14 +128,19 @@ function tgit()
     tmux split-window -h "$@"
 }
 
-
-alias vimresolve='vim $(git diff --name-only | uniq)'
-function vimgrep()
+export EDITOR=nvim
+alias vim='nvim'
+alias vimresolve='$EDITOR $(git diff --name-only | uniq)'
+function vimdiff()
 {
-    vim $(git grep -l "$@")
+    vim $(git diff "origin/$@" --name-only | uniq)
 }
 
-export EDITOR=vim
+function vimgrep()
+{
+    $EDITOR $(git grep -l "$@" ":(exclude)*.html")
+}
+
 PYTHONDONTWRITEBYTECODE="no, thank you"
 
 if [ -f ~/.passwords ]; then
@@ -143,6 +148,14 @@ if [ -f ~/.passwords ]; then
 fi
 alias dev='tmux new-session \; split-window -v \; send-keys "source venv/bin/activate" enter C-l'
 alias git-recent='for branch in `git branch -r | grep -v HEAD`;do echo -e `git show --format="%ci %cr" $branch | head -n 1` \\t$branch; done | sort -r'
+alias venv='source venv/bin/activate'
+function pod-ssh()
+{
+    kubectl exec --stdin --tty $@ -- /bin/bash
+}
+
+alias rand32='date +%s | sha256sum | base64 | head -c 32; echo'
+alias rand32base64='date +%s | sha256sum | base64 | head -c 32 | base64'
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
@@ -151,3 +164,48 @@ export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/tools/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
+export PATH=$PATH:$HOME/bin/nvim/bin
+
+export PATH=$PATH:/usr/local/go/bin
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
+export PYTHONDONTWRITEBYTECODE="no, thank you"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/william/google-cloud-sdk/path.bash.inc' ]; then . '/home/william/google-cloud-sdk/path.bash.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/william/google-cloud-sdk/completion.bash.inc' ]; then . '/home/william/google-cloud-sdk/completion.bash.inc'; fi
+
+fzf-git-branch() {
+    git rev-parse HEAD > /dev/null 2>&1 || return
+
+    git branch --color=always --all --sort=-committerdate |
+        grep -v HEAD |
+        fzf --height 50% --ansi --no-multi --preview-window right:65% \
+            --preview 'git log -n 50 --color=always --date=short --pretty="format:%C(auto)%cd %h%d %s" $(sed "s/.* //" <<< {})' |
+        sed "s/.* //"
+}
+
+fzf-git-checkout() {
+    git rev-parse HEAD > /dev/null 2>&1 || return
+
+    local branch
+
+    branch=$(fzf-git-branch)
+    if [[ "$branch" = "" ]]; then
+        echo "No branch selected."
+        return
+    fi
+
+    # If branch name starts with 'remotes/' then it is a remote branch. By
+    # using --track and a remote branch name, it is the same as:
+    # git checkout -b branchName --track origin/branchName
+    if [[ "$branch" = 'remotes/'* ]]; then
+        git checkout --track $branch
+    else
+        git checkout $branch;
+    fi
+}
+alias gco='fzf-git-checkout'
+alias gdiff='git diff --exit-code && git diff --staged'
