@@ -27,10 +27,12 @@ Plug 'sirver/ultisnips'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'AndrewRadev/sideways.vim'
+Plug 'liuchengxu/vista.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/vim-peekaboo'
+Plug 'mogelbrod/vim-jsonpath'
 call plug#end()
 
 autocmd BufNewFile,BufRead *.tsx setlocal tabstop=2
@@ -52,7 +54,18 @@ nmap <Leader>h :call CocAction("doHover")<CR>
 vmap f :call CocAction("format")<CR>
 
 "fzf setup
+command! -bang -nargs=* GGrep
+  \ call fzf#vim#grep(
+  \   'git grep --line-number -- '.shellescape(<q-args>), 0,
+  \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
+
 nmap <C-P> :GFiles<CR>
+nmap <C-G> :GGrep<CR>
+
+"Vista setup
+let g:vista_default_executive="coc"
+nnoremap <C-f> :Vista finder<CR>
+
 
 "Fugitive setup
 nnoremap k :cp<CR>
@@ -151,5 +164,3 @@ endfunction
 noremap S :call SendLineWithoutIndent()<CR>
 
 nnoremap <Leader>r :call system("tmux send-keys -t ! Up Enter")<CR>
-
-
