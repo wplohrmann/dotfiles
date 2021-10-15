@@ -164,3 +164,15 @@ endfunction
 noremap S :call SendLineWithoutIndent()<CR>
 
 nnoremap <Leader>r :call system("tmux send-keys -t ! Up Enter")<CR>
+
+function! Flake8()
+    call system("tmux send-keys -t ! 'flake8 --exclude=nb_\\*,venv --max-line-length=120' Enter")
+endfunction
+
+function! Mypy()
+    call system("tmux send-keys -t ! 'mypy . --ignore-missing-imports --exclude \"nb_*|venv\"' Enter")
+endfunction
+
+function! AutoPep8()
+    call system("tmux send-keys -t ! 'autopep8 " . expand("%") . " --in-place' Enter")
+endfunction
