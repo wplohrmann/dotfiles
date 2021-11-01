@@ -209,14 +209,34 @@ else
     nnoremap <Leader>r :call system("tmux send-keys -t ! Up Enter")<CR>
 endif
 
-function! Flake8()
-    call system("tmux send-keys -t ! 'flake8 --exclude=nb_\\*,venv --max-line-length=120' Enter")
-endfunction
+if exists('g:vscode')
+    function! Flake8()
+        call VSCodeNotify("workbench.action.terminal.sendSequence", {"text": "flake8 --exclude=nb_\\*,venv --max-line-length=120\u000d"})
+    endfunction
+else
+    function! Flake8()
+        call system("tmux send-keys -t ! 'flake8 --exclude=nb_\\*,venv --max-line-length=120' Enter")
+    endfunction
+endif
 
-function! Mypy()
-    call system("tmux send-keys -t ! 'mypy . --ignore-missing-imports --exclude \"nb_*|venv\"' Enter")
-endfunction
+if exists('g:vscode')
+    function! Mypy()
+        call VSCodeNotify("workbench.action.terminal.sendSequence", {"text": "mypy . --ignore-missing-imports --exclude \"nb_*|venv\"\u000d"})
+    endfunction
+else
+    function! Mypy()
+        call system("tmux send-keys -t ! 'mypy . --ignore-missing-imports --exclude \"nb_*|venv\"' Enter")
+    endfunction
+endif
 
-function! AutoPep8()
-    call system("tmux send-keys -t ! 'autopep8 " . expand("%") . " --in-place' Enter")
-endfunction
+if exists('g:vscode')
+    "VSCode prepends nvim buffer path with __vscode_neovim__-file:// so need to remove that first
+    function! AutoPep8()
+        call VSCodeNotify("workbench.action.terminal.sendSequence", {"text": "autopep8 " . expand("%")[25:] . " --in-place\u000d"})
+    endfunction
+else
+    function! AutoPep8()
+        call system("tmux send-keys -t ! 'autopep8 " . expand("%") . " --in-place' Enter")
+    endfunction
+endif
+
