@@ -38,20 +38,31 @@ call plug#end()
 autocmd BufNewFile,BufRead *.tsx setlocal tabstop=2
 autocmd BufNewFile,BufRead *.tsx setlocal shiftwidth=2
 
+autocmd BufNewFile,BufRead *.yaml setlocal tabstop=2
+autocmd BufNewFile,BufRead *.yaml setlocal shiftwidth=2
+
 autocmd BufNewFile,BufRead *.go setlocal noexpandtab
 autocmd BufNewFile,BufRead *.go setlocal nolist
 autocmd BufNewFile,BufRead *.go setlocal listchars=trail:~
 
+
 "Coc setup
-set signcolumn=yes
-set cmdheight=2
-nmap <Leader>d <Plug>(coc-definition)
-nmap <Leader>t <Plug>(coc-type-definition)
-nmap <Leader>a <Plug>(coc-references)
-nmap <Leader>f <Plug>(coc-fix-current)
-nmap <Leader>n <Plug>(coc-rename)
-nmap <Leader>h :call CocAction("doHover")<CR>
-vmap f :call CocAction("format")<CR>
+if exists('g:vscode')
+    " VSCode extension
+    nmap <Leader>d :call VSCodeNotify("editor.action.revealDefinition")<CR>
+    nmap <Leader>t :call VSCodeNotify("editor.action.goToTypeDefinition")<CR>
+    nmap <Leader>h :call VSCodeNotify("editor.action.showHover")<CR>
+else
+    set signcolumn=yes
+    set cmdheight=2
+    nmap <Leader>d <Plug>(coc-definition)
+    nmap <Leader>t <Plug>(coc-type-definition)
+    nmap <Leader>a <Plug>(coc-references)
+    nmap <Leader>f <Plug>(coc-fix-current)
+    nmap <Leader>n <Plug>(coc-rename)
+    nmap <Leader>h :call CocAction("doHover")<CR>
+    vmap f :call CocAction("format")<CR>
+endif
 
 "fzf setup
 command! -bang -nargs=* GGrep
@@ -72,7 +83,11 @@ nnoremap k :cp<CR>
 nnoremap j :cn<CR>
 
 "Close buffer
-nnoremap <C-w> :bd<CR>
+if exists('g:vscode')
+    nnoremap <C-w> :call VSCodeNotify("workbench.action.closeActiveEditor")<CR>
+else
+    nnoremap <C-w> :bd<CR>
+endif
 
 "Move a single line up/down
 nnoremap <C-j> :m .+1<CR>==
@@ -103,8 +118,14 @@ set path +=**
 
 
 "Cycle through buffers
-nnoremap l :bnext<CR>
-nnoremap h :bprev<CR>
+if exists('g:vscode')
+    " VSCode extension
+    nnoremap h :call VSCodeNotify("workbench.action.previousEditor")<CR>
+    nnoremap l :call VSCodeNotify("workbench.action.nextEditor")<CR>
+else
+    nnoremap l :bnext<CR>
+    nnoremap h :bprev<CR>
+endif
 
 "All of the colours
 set t_Co=256
@@ -131,10 +152,17 @@ omap ia <Plug>SidewaysArgumentTextobjI
 xmap ia <Plug>SidewaysArgumentTextobjI
 
 "Enter insert mode
+
 nnoremap <Space> i
 
 "Map ENTER in normal mode to save
-nnoremap <CR> :w<CR>
+if exists('g:vscode')
+    " VSCode extension
+    nnoremap <CR> :Write<CR>
+else
+    nnoremap <CR> :w<CR>
+endif
+
 
 "Recognize .CPP files
 autocmd BufNewFile,BufRead *.CPP set syntax=cpp
@@ -147,23 +175,39 @@ set listchars=tab:>-,trail:~
 set foldmethod=syntax
 set foldlevel=99
 
-"Send current line to tmux pane
-function! SendLine()
-    let foo = getline(getcurpos()[1])
-    call system("tmux send-keys -t ! '" . foo . "' Enter")
-endfunction
 
-noremap s :call SendLine()<CR>
+if exists('g:vscode')
+    function SendLine() range
+        let startLine = line("'<")
+        let endLine = line("'>")
+        :call VSCodeNotifyRange("workbench.action.terminal.runSelectedText", startLine, endLine, 0)<CR>
+    endfunction
+    vnoremap S :call SendLine()<CR>
+    nnoremap S :call VSCodeNotify("workbench.action.terminal.runSelectedText")<CR>
+else
+    "Send current line to tmux pane
+    function! SendLine()
+        let foo = getline(getcurpos()[1])
+        call system("tmux send-keys -t ! '" . foo . "' Enter")
+    endfunction
 
-"Send current line to tmux pane without indentation
-function! SendLineWithoutIndent()
-    let foo = join(split(getline(getcurpos()[1])))
-    call system("tmux send-keys -t ! '" . foo . "' Enter")
-endfunction
+    "Send current line to tmux pane without indentation
+    function! SendLineWithoutIndent()
+        let foo = join(split(getline(getcurpos()[1])))
+        call system("tmux send-keys -t ! '" . foo . "' Enter")
+    endfunction
 
-noremap S :call SendLineWithoutIndent()<CR>
+    noremap S :call SendLineWithoutIndent()<CR>
+    noremap s :call SendLine()<CR>
+endif
 
-nnoremap <Leader>r :call system("tmux send-keys -t ! Up Enter")<CR>
+
+if exists('g:vscode')
+    " text = up + enter
+    nnoremap <Leader>r :call VSCodeNotify("workbench.action.terminal.sendSequence", {"text": "\u001b[A\u000d"})<CR>
+else
+    nnoremap <Leader>r :call system("tmux send-keys -t ! Up Enter")<CR>
+endif
 
 function! Flake8()
     call system("tmux send-keys -t ! 'flake8 --exclude=nb_\\*,venv --max-line-length=120' Enter")
