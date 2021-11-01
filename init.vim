@@ -177,13 +177,26 @@ set foldlevel=99
 
 
 if exists('g:vscode')
+    function SendLineWithoutIndent() range
+        let startLine = line("'<")
+        let indent = match(getline(startLine), '\S') + 1
+        let endLine = line("'>")
+        let currentLine = startLine
+        while currentLine <= endLine
+            call VSCodeCallRangePos("workbench.action.terminal.runSelectedText", currentLine, currentLine, indent, 9000, 0)<CR>
+            let currentLine +=1
+            echom currentLine
+        endwhile
+    endfunction
     function SendLine() range
         let startLine = line("'<")
         let endLine = line("'>")
         :call VSCodeNotifyRange("workbench.action.terminal.runSelectedText", startLine, endLine, 0)<CR>
     endfunction
-    vnoremap S :call SendLine()<CR>
+    vnoremap S :call SendLineWithoutIndent()<CR>
     nnoremap S :call VSCodeNotify("workbench.action.terminal.runSelectedText")<CR>
+    vnoremap s :call SendLine()<CR>
+    nnoremap s :call VSCodeNotify("workbench.action.terminal.runSelectedText")<CR>
 else
     "Send current line to tmux pane
     function! SendLine()
