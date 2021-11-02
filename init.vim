@@ -185,7 +185,6 @@ if exists('g:vscode')
         while currentLine <= endLine
             call VSCodeCallRangePos("workbench.action.terminal.runSelectedText", currentLine, currentLine, indent, 9000, 0)<CR>
             let currentLine +=1
-            echom currentLine
         endwhile
     endfunction
     function SendLine() range
