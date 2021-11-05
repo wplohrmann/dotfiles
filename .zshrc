@@ -29,25 +29,33 @@ export NVM_DIR=~/.nvm
 source $(brew --prefix nvm)/nvm.sh
 alias vim=nvim
 export PYTHONDONTWRITEBYTECODE="no, thank you"
-export EDITOR=nvim
 
 if [ -f ~/.passwords ]; then
     source ~/.passwords
 fi
 
+export EDITOR=nvim
+
+if [ "$TERM_PROGRAM" = "vscode" ]; then
+    export PSEUDOVIM=code
+else
+    export PSEUDOVIM=nvim
+fi
+
 function vimgrep()
 {
-    $EDITOR $(git grep -l "$@")
+    $PSEUDOVIM $(git grep -l "$@")
 }
 
 function vimdiff()
 {
-    vim $(git diff "origin/$@" --name-only | uniq)
+    $PSEUDOVIM $(git diff "origin/$@" --name-only | uniq)
 }
 
-alias vimresolve='$EDITOR $(git diff --name-only | uniq)'
+alias vimresolve='$PSEUDOVIM $(git diff --name-only | uniq)'
 
 export LDFLAGS="-L/opt/homebrew/opt/openblas/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/openblas/include"
 export PKG_CONFIG_PATH="/opt/homebrew/opt/openblas/lib/pkgconfig"
+export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 
