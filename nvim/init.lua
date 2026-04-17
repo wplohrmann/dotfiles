@@ -9,9 +9,18 @@ vim.opt.expandtab = true
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.number = true
+vim.o.autoread = true
 
 vim.g.clipboard = 'tmux'
 vim.g.mapleader = ","
+
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
+  callback = function()
+    if vim.fn.getcmdwintype() == '' then
+      vim.cmd('checktime')
+    end
+  end,
+})
 
 
 -- LSP
@@ -72,6 +81,11 @@ vim.keymap.set('n', 'h', ':bprevious<CR>')
 vim.keymap.set('n', '<C-p>', ':Telescope git_files<CR>')
 vim.keymap.set('n', '<C-w>', ':bd<CR>')
 vim.keymap.set('n', '<C-f>', ':Telescope live_grep<CR>')
+
+-- Open dotfiles in telescope
+vim.api.nvim_create_user_command('Config', function()
+    require('telescope.builtin').find_files({ cwd = vim.fn.expand('~/src/dotfiles') })
+end, {})
 
 -- Execute last command in the last tab again
 vim.keymap.set('n', '<Leader>r', function()
