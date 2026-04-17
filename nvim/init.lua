@@ -22,6 +22,21 @@ vim.keymap.set('n', 'h', 'gT')
 -- Find file
 vim.keymap.set('n', '<C-p>', ':Telescope find_files<CR>')
 
+-- LSP
+vim.lsp.config['basedpyright'] = {
+    cmd = { 'basedpyright-langserver', '--stdio' },
+    filetypes = { 'python' },
+    root_markers = { 'pyproject.toml', 'setup.py', 'setup.cfg', '.git' },
+    settings = {
+        basedpyright = {
+            analysis = {
+                typeCheckingMode = 'standard',
+            },
+        },
+    },
+}
+vim.lsp.enable('basedpyright')
+
 -- Execute last command in the last tab again
 vim.keymap.set('n', '<Leader>r', function()
     vim.fn.system("tmux send-keys -t ! Up Enter")
