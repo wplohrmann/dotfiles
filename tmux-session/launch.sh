@@ -20,7 +20,7 @@ NVIM_PANE=$(tmux display-message -t "$SESSION:main" -p '#{pane_id}')
 TERM_PANE=$(tmux split-window -v -p 35 -t "$SESSION:main.$NVIM_PANE" -P -F '#{pane_id}')
 
 # Split terminal area: right 30% for TUI
-TUI_PANE=$(tmux split-window -h -p 30 -t "$SESSION:main.$TERM_PANE" -P -F '#{pane_id}')
+TUI_PANE=$(tmux split-window -h -p 5 -t "$SESSION:main.$TERM_PANE" -P -F '#{pane_id}')
 
 # Hidden background window for inactive terminals
 tmux new-window -d -t "$SESSION" -n _bg
