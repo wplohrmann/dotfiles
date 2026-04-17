@@ -11,8 +11,10 @@ vim.opt.shiftwidth = 4
 vim.opt.number = true
 vim.o.autoread = true
 
-vim.g.clipboard = 'tmux'
+vim.opt.clipboard = "unnamedplus"
 vim.g.mapleader = ","
+vim.diagnostic.config({ virtual_lines = {current_line = true} })
+
 
 vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
   callback = function()
@@ -40,6 +42,7 @@ vim.lsp.enable('basedpyright')
 
 
 
+require('mini.pairs').setup({})
 require('mini.diff').setup({})
 require('mini.git').setup({})
 require('mini.icons').setup({})
@@ -79,12 +82,12 @@ vim.keymap.set('n', 'l', ':bNext<CR>')
 vim.keymap.set('n', 'h', ':bprevious<CR>')
 -- Find file
 vim.keymap.set('n', '<C-p>', ':Telescope git_files<CR>')
-vim.keymap.set('n', '<C-w>', ':bd<CR>')
+vim.keymap.set('n', '<C-w>', ':bd<CR>', { nowait = true })
 vim.keymap.set('n', '<C-f>', ':Telescope live_grep<CR>')
 
 -- Open dotfiles in telescope
 vim.api.nvim_create_user_command('Config', function()
-    require('telescope.builtin').find_files({ cwd = vim.fn.expand('~/src/dotfiles') })
+    require('telescope.builtin').git_files({ cwd = vim.fn.expand('~/src/dotfiles') })
 end, {})
 
 -- Execute last command in the last tab again
