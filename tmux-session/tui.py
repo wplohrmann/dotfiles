@@ -114,7 +114,7 @@ class TerminalTUI(App):
         border: solid #007acc;
         padding: 1 2;
         width: 38;
-        height: 8;
+        height: 9;
     }
 
     #rename-box Label {
