@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 from typing import Optional
@@ -225,6 +226,9 @@ class TerminalTUI(App):
         )
         if not pane_id:
             return
+        pane_path = self._tmux("display-message", "-t", pane_id, "-p", "#{pane_current_path}")
+        if pane_path and os.path.exists(os.path.join(pane_path, "venv", "bin", "activate")):
+            self._tmux("send-keys", "-t", pane_id, "source venv/bin/activate", "Enter")
         self.state["terminals"].append({"id": pane_id, "name": f"Terminal {idx}"})
         self.state["next_index"] = idx + 1
         self._save_state()

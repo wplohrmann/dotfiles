@@ -2,7 +2,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SESSION="workspace"
+SESSION="$(basename "$PWD")"
 STATE_FILE="/tmp/workspace-state.json"
 CMD_FILE="/tmp/workspace-tui-cmd"
 
@@ -20,7 +20,7 @@ NVIM_PANE=$(tmux display-message -t "$SESSION:main" -p '#{pane_id}')
 TERM_PANE=$(tmux split-window -v -p 35 -t "$SESSION:main.$NVIM_PANE" -P -F '#{pane_id}')
 
 # Split terminal area: right 30% for TUI
-TUI_PANE=$(tmux split-window -h -p 5 -t "$SESSION:main.$TERM_PANE" -P -F '#{pane_id}')
+TUI_PANE=$(tmux split-window -h -p 3 -t "$SESSION:main.$TERM_PANE" -P -F '#{pane_id}')
 
 # Hidden background window for inactive terminals
 tmux new-window -d -t "$SESSION" -n _bg
@@ -44,6 +44,11 @@ tmux bind-key -n C-t run-shell "echo new_terminal >> '$CMD_FILE'"
 # Cmd+Opt+Left/Right (sent as Ctrl+Alt+Left/Right by Ghostty) cycle terminals
 tmux bind-key -n 'M-C-Left' run-shell "echo prev_terminal >> '$CMD_FILE'"
 tmux bind-key -n 'M-C-Right' run-shell "echo next_terminal >> '$CMD_FILE'"
+
+# Activate venv in terminal pane if one exists in cwd
+if [ -f "$PWD/venv/bin/activate" ]; then
+  tmux send-keys -t "$SESSION:main.$TERM_PANE" "source '$PWD/venv/bin/activate'" Enter
+fi
 
 # Launch nvim in the top pane
 tmux send-keys -t "$SESSION:main.$NVIM_PANE" "nvim" Enter
