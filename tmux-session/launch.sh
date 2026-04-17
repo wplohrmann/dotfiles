@@ -6,7 +6,12 @@ SESSION="$(basename "$PWD")"
 STATE_FILE="/tmp/workspace-state-${SESSION}.json"
 CMD_FILE="/tmp/workspace-tui-cmd-${SESSION}"
 
-tmux kill-session -t "$SESSION" 2>/dev/null || true
+# Attach if session already exists
+if tmux has-session -t "$SESSION" 2>/dev/null; then
+  exec tmux attach-session -t "$SESSION"
+  exit 0
+fi
+
 rm -f "$CMD_FILE"
 touch "$CMD_FILE"
 
@@ -40,10 +45,10 @@ cat > "$STATE_FILE" << EOF
 EOF
 
 # Ctrl+T creates a new terminal via the command file
-tmux bind-key -n C-t run-shell "echo new_terminal >> '$CMD_FILE'"
+tmux bind-key -n C-t run-shell "echo new_terminal >> '/tmp/workspace-tui-cmd-#{session_name}'"
 # Cmd+Opt+Left/Right (sent as Ctrl+Alt+Left/Right by Ghostty) cycle terminals
-tmux bind-key -n 'M-C-Left' run-shell "echo prev_terminal >> '$CMD_FILE'"
-tmux bind-key -n 'M-C-Right' run-shell "echo next_terminal >> '$CMD_FILE'"
+tmux bind-key -n 'M-C-Left' run-shell "echo prev_terminal >> '/tmp/workspace-tui-cmd-#{session_name}'"
+tmux bind-key -n 'M-C-Right' run-shell "echo next_terminal >> '/tmp/workspace-tui-cmd-#{session_name}'"
 
 # Activate venv in terminal pane if one exists in cwd
 if [ -f "$PWD/venv/bin/activate" ]; then

@@ -69,6 +69,14 @@ vim.api.nvim_create_autocmd('FileType', {
   callback = function() vim.treesitter.start() end,
 })
 
+require('mini.hues').setup({
+    background = '#11262d',
+    foreground = '#c0c8cc',
+    plugins = {
+      default = false,
+      ['nvim-mini/mini.nvim'] = true,
+    },
+})
 require('mini.completion').setup({})
 require('mini.pairs').setup({})
 require('mini.diff').setup({})
