@@ -47,6 +47,6 @@ tmux send-keys -t "$SESSION:main.$NVIM_PANE" "nvim" Enter
 
 # Launch TUI in the right pane
 tmux send-keys -t "$SESSION:main.$TUI_PANE" \
-  "python3 '$SCRIPT_DIR/tui.py' '$STATE_FILE' '$CMD_FILE'" Enter
+  "python '$SCRIPT_DIR/tui.py' '$STATE_FILE' '$CMD_FILE'" Enter
 
 exec tmux attach-session -t "$SESSION"

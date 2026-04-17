@@ -214,18 +214,21 @@ class TerminalTUI(App):
         self._save_state()
         self._refresh_list()
 
-    async def action_rename_terminal(self) -> None:
+    def action_rename_terminal(self) -> None:
         item = self._highlighted()
         if item is None:
             return
-        new_name = await self.push_screen_wait(RenameScreen(item.term_name))
-        if new_name and new_name != item.term_name:
-            for term in self.state["terminals"]:
-                if term["id"] == item.term_id:
-                    term["name"] = new_name
-                    break
-            self._save_state()
-            self._refresh_list()
+
+        def on_dismiss(new_name: str | None) -> None:
+            if new_name and new_name != item.term_name:
+                for term in self.state["terminals"]:
+                    if term["id"] == item.term_id:
+                        term["name"] = new_name
+                        break
+                self._save_state()
+                self._refresh_list()
+
+        self.push_screen(RenameScreen(item.term_name), on_dismiss)
 
     def action_close_terminal(self) -> None:
         item = self._highlighted()
