@@ -60,6 +60,6 @@ alias ss='git diff --staged'
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
-alias ll=ls -alh
+alias ll='ls -alh'
 
 . "$HOME/.local/bin/env"
