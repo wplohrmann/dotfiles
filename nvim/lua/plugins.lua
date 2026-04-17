@@ -1,6 +1,13 @@
 return {
     'tpope/vim-surround',
-    'tpope/vim-commentary',
+    {
+      'wplohrmann/treewalker.nvim',
+      commit = 'f012a564947443ded7f5275b0159966ed742f468',
+      opts = {
+          normalize = false,
+          wow = true,
+      }
+    },
     {
         'nvim-telescope/telescope.nvim', version = '*',
         dependencies = {
@@ -14,13 +21,17 @@ return {
       event = "VeryLazy",
       ---@type Flash.Config
       opts = {},
-      keys = {
-        { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-        { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-        { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-        { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-        { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+      opts = {
+        modes = {
+         search = {
+           enabled = true,
+          },
+          char = {
+            enabled = false,
+          },
+        },
       },
+      keys = {},
     },
     {
       'nvim-treesitter/nvim-treesitter',

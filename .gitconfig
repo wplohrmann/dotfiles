@@ -1,3 +1,5 @@
 [user]
 	name = Will Lohrmann
 	email = willia2501@gmail.com
+[push]
+    autoSetupRemote = True
