@@ -41,6 +41,9 @@ EOF
 
 # Ctrl+T creates a new terminal via the command file
 tmux bind-key -n C-t run-shell "echo new_terminal >> '$CMD_FILE'"
+# Cmd+Opt+Left/Right (sent as Ctrl+Alt+Left/Right by Ghostty) cycle terminals
+tmux bind-key -n 'M-C-Left' run-shell "echo prev_terminal >> '$CMD_FILE'"
+tmux bind-key -n 'M-C-Right' run-shell "echo next_terminal >> '$CMD_FILE'"
 
 # Launch nvim in the top pane
 tmux send-keys -t "$SESSION:main.$NVIM_PANE" "nvim" Enter

@@ -9,6 +9,6 @@
   "plenary.nvim": { "branch": "master", "commit": "74b06c6c75e4eeb3108ec01852001636d85a932b" },
   "telescope-fzf-native.nvim": { "branch": "main", "commit": "6fea601bd2b694c6f2ae08a6c6fab14930c60e2c" },
   "telescope.nvim": { "branch": "master", "commit": "5255aa27c422de944791318024167ad5d40aad20" },
-  "treewalker.nvim": { "branch": "main", "commit": "f012a564947443ded7f5275b0159966ed742f468" },
+  "treewalker.nvim": { "branch": "main", "commit": "6fbceceb8966620da8970b727b6daa358b982805" },
   "vim-surround": { "branch": "master", "commit": "3d188ed2113431cf8dac77be61b842acb64433d9" }
 }

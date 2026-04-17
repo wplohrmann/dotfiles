@@ -180,8 +180,13 @@ class TerminalTUI(App):
                     f.seek(0)
                     f.truncate()
             for line in lines:
-                if line.strip() == "new_terminal":
+                cmd = line.strip()
+                if cmd == "new_terminal":
                     self.action_new_terminal()
+                elif cmd == "prev_terminal":
+                    self._cycle_terminal(-1)
+                elif cmd == "next_terminal":
+                    self._cycle_terminal(1)
         except (FileNotFoundError, IOError):
             pass
 
@@ -199,6 +204,17 @@ class TerminalTUI(App):
         lv = self.query_one("#terminal-list", ListView)
         child = lv.highlighted_child
         return child if isinstance(child, TerminalEntry) else None
+
+    def _cycle_terminal(self, direction: int) -> None:
+        terminals = self.state["terminals"]
+        if len(terminals) <= 1:
+            return
+        ids = [t["id"] for t in terminals]
+        try:
+            idx = ids.index(self.state["display_pane"])
+        except ValueError:
+            return
+        self._do_switch(ids[(idx + direction) % len(ids)])
 
     def action_new_terminal(self) -> None:
         idx = self.state["next_index"]

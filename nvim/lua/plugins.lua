@@ -1,12 +1,8 @@
 return {
     'tpope/vim-surround',
     {
-      'wplohrmann/treewalker.nvim',
-      commit = 'f012a564947443ded7f5275b0159966ed742f468',
-      opts = {
-          normalize = false,
-          wow = true,
-      }
+      'aaronik/treewalker.nvim',
+      opts = {}
     },
     {
         'nvim-telescope/telescope.nvim', version = '*',
