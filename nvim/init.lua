@@ -1,7 +1,7 @@
 require("config.lazy")
 
 -- Settings
-vim.opt.hlsearch = true
+vim.opt.hlsearch = false
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.autoindent = true

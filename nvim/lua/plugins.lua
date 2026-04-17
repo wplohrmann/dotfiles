@@ -26,5 +26,6 @@ return {
       'nvim-treesitter/nvim-treesitter',
       lazy = false,
       build = ':TSUpdate'
-    }
+    },
+    { 'nvim-mini/mini.nvim', version = false }
 }
