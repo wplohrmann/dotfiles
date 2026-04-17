@@ -55,6 +55,7 @@ alias gg='git status'
 alias ff='git diff'
 alias ss='git diff --staged'
 alias ll='ls -alh'
+alias dev='~/src/dotfiles/tmux-session/launch.sh'
 
 export NVM_DIR=~/.nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

@@ -3,8 +3,8 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SESSION="$(basename "$PWD")"
-STATE_FILE="/tmp/workspace-state.json"
-CMD_FILE="/tmp/workspace-tui-cmd"
+STATE_FILE="/tmp/workspace-state-${SESSION}.json"
+CMD_FILE="/tmp/workspace-tui-cmd-${SESSION}"
 
 tmux kill-session -t "$SESSION" 2>/dev/null || true
 rm -f "$CMD_FILE"
@@ -55,6 +55,6 @@ tmux send-keys -t "$SESSION:main.$NVIM_PANE" "nvim" Enter
 
 # Launch TUI in the right pane
 tmux send-keys -t "$SESSION:main.$TUI_PANE" \
-  "python '$SCRIPT_DIR/tui.py' '$STATE_FILE' '$CMD_FILE'" Enter
+  "'$SCRIPT_DIR/venv/bin/python' '$SCRIPT_DIR/tui.py' '$STATE_FILE' '$CMD_FILE'" Enter
 
 exec tmux attach-session -t "$SESSION"
