@@ -153,3 +153,60 @@ vim.keymap.set('n', '<S-Left>', '<cmd>Treewalker Left<CR>', { silent = true })
 vim.keymap.set('n', '<S-Up>', '<cmd>Treewalker Up<CR>', { silent = true })
 vim.keymap.set('n', '<S-Down>', '<cmd>Treewalker Down<CR>', { silent = true })
 
+-- REPL sender via tmux
+_G.repl_indent = 0
+
+local function tmux_send_lines(lines)
+    for _, line in ipairs(lines) do
+        vim.fn.system({ 'tmux', 'send-keys', '-t', '{last}', '-l', line })
+        vim.fn.system({ 'tmux', 'send-keys', '-t', '{last}', 'Enter' })
+    end
+end
+
+local function repl_send(lines)
+    local min_indent = math.huge
+    for _, line in ipairs(lines) do
+        if line:match('%S') then
+            min_indent = math.min(min_indent, #line:match('^%s*'))
+        end
+    end
+    if min_indent == math.huge then min_indent = 0 end
+
+    local prefix = string.rep(' ', _G.repl_indent)
+    local out = {}
+    for _, line in ipairs(lines) do
+        if line:match('%S') then
+            table.insert(out, prefix .. line:sub(min_indent + 1))
+        else
+            table.insert(out, '')
+        end
+    end
+
+    tmux_send_lines(out)
+
+    local last = out[#out]
+    if not last:match('%S') then
+        _G.repl_indent = 0
+    elseif last:match(':%s*$') then
+        _G.repl_indent = _G.repl_indent + 4
+    end
+end
+
+vim.keymap.set('n', 's', function()
+    repl_send({ vim.api.nvim_get_current_line() })
+end)
+
+vim.keymap.set('v', 's', function()
+    local vstart = vim.fn.getpos('v')
+    local vend = vim.fn.getpos('.')
+    local start_line = math.min(vstart[2], vend[2])
+    local end_line = math.max(vstart[2], vend[2])
+    local lines = vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
+    repl_send(lines)
+end)
+
+vim.keymap.set('n', 'S', function()
+    tmux_send_lines({ '' })
+    _G.repl_indent = 0
+end)
+
