@@ -26,8 +26,6 @@ source $ZSH/oh-my-zsh.sh
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 export NVM_DIR=~/.nvm
-source $(brew --prefix nvm)/nvm.sh
-alias vim=nvim
 export PYTHONDONTWRITEBYTECODE="no, thank you"
 
 if [ -f ~/.passwords ]; then
@@ -53,9 +51,15 @@ function vimdiff()
 }
 
 alias vimresolve='$PSEUDOVIM $(git diff --name-only | uniq)'
+alias vim=nvim
+alias gg='git status'
+alias ff='git diff'
+alias ss='git diff --staged'
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-export LDFLAGS="-L/opt/homebrew/opt/openblas/lib"
-export CPPFLAGS="-I/opt/homebrew/opt/openblas/include"
-export PKG_CONFIG_PATH="/opt/homebrew/opt/openblas/lib/pkgconfig"
-export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
+alias ll=ls -alh
+
+. "$HOME/.local/bin/env"
