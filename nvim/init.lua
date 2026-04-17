@@ -42,6 +42,7 @@ vim.lsp.enable('basedpyright')
 
 
 
+require('mini.completion').setup({})
 require('mini.pairs').setup({})
 require('mini.diff').setup({})
 require('mini.git').setup({})
