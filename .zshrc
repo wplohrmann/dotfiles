@@ -25,7 +25,6 @@ source $ZSH/oh-my-zsh.sh
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
-export NVM_DIR=~/.nvm
 export PYTHONDONTWRITEBYTECODE="no, thank you"
 
 if [ -f ~/.passwords ]; then
@@ -55,11 +54,13 @@ alias vim=nvim
 alias gg='git status'
 alias ff='git diff'
 alias ss='git diff --staged'
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-
 alias ll='ls -alh'
 
+export NVM_DIR=~/.nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+
 . "$HOME/.local/bin/env"
+
+export PATH="$HOME/.cargo/bin:$PATH"

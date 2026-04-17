@@ -10,6 +10,7 @@ vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.number = true
 
+vim.g.clipboard = 'tmux'
 vim.g.mapleader = ","
 
 -- space -> Insert mode
@@ -20,7 +21,7 @@ vim.keymap.set('n', '<CR>', ':w<CR>')
 vim.keymap.set('n', 'l', 'gt')
 vim.keymap.set('n', 'h', 'gT')
 -- Find file
-vim.keymap.set('n', '<C-p>', ':Telescope find_files<CR>')
+vim.keymap.set('n', '<C-p>', ':Telescope git_files<CR>')
 
 -- LSP
 vim.lsp.config['basedpyright'] = {
@@ -41,3 +42,8 @@ vim.lsp.enable('basedpyright')
 vim.keymap.set('n', '<Leader>r', function()
     vim.fn.system("tmux send-keys -t ! Up Enter")
 end)
+
+vim.keymap.set('n', '<Leader>h', vim.lsp.buf.hover)
+vim.keymap.set('n', '<Leader>r', ':Telescope lsp_references<CR>')
+vim.keymap.set('n', '<Leader>d', ':Telescope lsp_definitions<CR>')
+vim.keymap.set('n', '<Leader>n', vim.lsp.buf.rename)
