@@ -177,8 +177,6 @@ local function repl_send(lines)
     for _, line in ipairs(lines) do
         if line:match('%S') then
             table.insert(out, prefix .. line:sub(min_indent + 1))
-        else
-            table.insert(out, '')
         end
     end
 
