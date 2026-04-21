@@ -69,6 +69,7 @@ vim.api.nvim_create_autocmd('FileType', {
   callback = function() vim.treesitter.start() end,
 })
 
+require('mini.files').setup({})
 require('mini.hues').setup({
     background = '#11262d',
     foreground = '#c0c8cc',
@@ -102,6 +103,7 @@ require('mini.comment').setup({
     },
 })
 
+vim.keymap.set('n', '<C-o>', MiniFiles.open)
 vim.keymap.set('n', '<Leader>h', vim.lsp.buf.hover)
 vim.keymap.set('n', '<Leader>r', ':Telescope lsp_references<CR>')
 vim.keymap.set('n', '<Leader>d', ':Telescope lsp_definitions<CR>')
