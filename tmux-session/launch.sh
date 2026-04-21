@@ -8,6 +8,7 @@ CMD_FILE="/tmp/workspace-tui-cmd-${SESSION}"
 
 # Attach if session already exists
 if tmux has-session -t "$SESSION" 2>/dev/null; then
+  printf '\033]2;%s\033\\' "$SESSION"
   exec tmux attach-session -t "$SESSION"
   exit 0
 fi
@@ -17,6 +18,10 @@ touch "$CMD_FILE"
 
 # Create session
 tmux new-session -d -s "$SESSION" -n main
+
+# Make tmux propagate the session name as the outer terminal window title
+tmux set-option -t "$SESSION" set-titles on
+tmux set-option -t "$SESSION" set-titles-string "$SESSION"
 
 # Capture the initial (nvim) pane
 NVIM_PANE=$(tmux display-message -t "$SESSION:main" -p '#{pane_id}')

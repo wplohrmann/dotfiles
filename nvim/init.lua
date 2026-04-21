@@ -63,9 +63,26 @@ vim.lsp.config['lua_ls'] = {
 }
 vim.lsp.enable('lua_ls')
 
+-- Run clangd inside the ncb_dev container when working in fusion-ncb, so it
+-- can resolve /workspace/ncb and /opt/ros paths from the container's view.
+local clangd_cmd = { 'clangd', '--background-index', '--clang-tidy', '--header-insertion=iwyu' }
+if vim.fn.getcwd():match('/fusion%-ncb') then
+    clangd_cmd = {
+        'docker', 'exec', '-i', 'ncb_dev',
+        'clangd', '--background-index', '--clang-tidy', '--header-insertion=iwyu',
+        '--path-mappings=' .. vim.fn.getcwd() .. '=/workspace/ncb',
+    }
+end
+vim.lsp.config['clangd'] = {
+  cmd = clangd_cmd,
+  filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
+  root_markers = { '.clangd', '.clang-tidy', '.clang-format', 'compile_commands.json', 'compile_flags.txt', 'configure.ac', '.git' },
+}
+vim.lsp.enable('clangd')
+
 
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'python', 'lua', 'json', 'toml', 'rust' },
+  pattern = { 'python', 'lua', 'json', 'toml', 'rust', 'c', 'cpp' },
   callback = function() vim.treesitter.start() end,
 })
 
@@ -103,7 +120,7 @@ require('mini.comment').setup({
     },
 })
 
-vim.keymap.set('n', '<C-o>', MiniFiles.open)
+vim.keymap.set('n', '<C-n>', MiniFiles.open)
 vim.keymap.set('n', '<Leader>h', vim.lsp.buf.hover)
 vim.keymap.set('n', '<Leader>r', ':Telescope lsp_references<CR>')
 vim.keymap.set('n', '<Leader>d', ':Telescope lsp_definitions<CR>')
