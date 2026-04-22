@@ -134,7 +134,7 @@ vim.keymap.set('n', '<Space>', 'i')
 -- enter -> Save file
 vim.keymap.set('n', '<CR>', ':w<CR>')
 -- Move back and forth between buffers
-vim.keymap.set('n', 'l', ':bNext<CR>')
+vim.keymap.set('n', 'l', ':bnext<CR>')
 vim.keymap.set('n', 'h', ':bprevious<CR>')
 -- Find file
 vim.keymap.set('n', '<C-p>', ':Telescope git_files<CR>')
