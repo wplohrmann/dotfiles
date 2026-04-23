@@ -3,3 +3,5 @@
 	email = willia2501@gmail.com
 [push]
     autoSetupRemote = True
+[core]
+	excludesfile = /Users/will/.gitignore
