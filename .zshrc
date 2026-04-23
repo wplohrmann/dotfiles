@@ -22,6 +22,27 @@ export FZF_BASE=/opt/homebrew/opt/fzf
 
 source $ZSH/oh-my-zsh.sh
 
+setopt IGNORE_EOF
+
+# Ctrl+D at an empty prompt inside a tmux-session workspace: close this
+# terminal the same way `x` in the TUI sidebar does.
+_close_tui_terminal_or_delete() {
+  if [[ -n $BUFFER ]]; then
+    zle delete-char-or-list
+    return
+  fi
+  if [[ -n $TMUX_PANE ]]; then
+    local session cmd_file
+    session=$(tmux display-message -p '#{session_name}' 2>/dev/null)
+    cmd_file="/tmp/workspace-tui-cmd-${session}"
+    if [[ -w $cmd_file ]]; then
+      print "close_terminal:$TMUX_PANE" >> $cmd_file
+    fi
+  fi
+}
+zle -N _close_tui_terminal_or_delete
+bindkey '^D' _close_tui_terminal_or_delete
+
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
 

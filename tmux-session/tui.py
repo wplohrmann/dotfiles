@@ -188,6 +188,8 @@ class TerminalTUI(App):
                     self._cycle_terminal(-1)
                 elif cmd == "next_terminal":
                     self._cycle_terminal(1)
+                elif cmd.startswith("close_terminal:"):
+                    self._close_terminal_by_id(cmd.split(":", 1)[1])
         except (FileNotFoundError, IOError):
             pass
 
@@ -252,14 +254,20 @@ class TerminalTUI(App):
 
     def action_close_terminal(self) -> None:
         item = self._highlighted()
-        if item is None or len(self.state["terminals"]) <= 1:
+        if item is not None:
+            self._close_terminal_by_id(item.term_id)
+
+    def _close_terminal_by_id(self, pane_id: str) -> None:
+        if len(self.state["terminals"]) <= 1:
             return
-        if item.term_id == self.state["display_pane"]:
-            others = [t for t in self.state["terminals"] if t["id"] != item.term_id]
+        if not any(t["id"] == pane_id for t in self.state["terminals"]):
+            return
+        if pane_id == self.state["display_pane"]:
+            others = [t for t in self.state["terminals"] if t["id"] != pane_id]
             self._do_switch(others[0]["id"])
-        self._tmux("kill-pane", "-t", item.term_id)
+        self._tmux("kill-pane", "-t", pane_id)
         self.state["terminals"] = [
-            t for t in self.state["terminals"] if t["id"] != item.term_id
+            t for t in self.state["terminals"] if t["id"] != pane_id
         ]
         self._save_state()
         self._refresh_list()
