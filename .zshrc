@@ -78,6 +78,22 @@ alias ss='git diff --staged'
 alias ll='ls -alh'
 alias dev='~/src/dotfiles/tmux-session/launch.sh'
 
+# `undev`: kill the current tmux-session workspace. Only works inside one.
+undev() {
+  if [[ -z $TMUX ]]; then
+    print -u2 "undev: not inside a tmux session"
+    return 1
+  fi
+  local session
+  session=$(tmux display-message -p '#{session_name}' 2>/dev/null)
+  if [[ ! -f "/tmp/workspace-state-${session}.json" ]]; then
+    print -u2 "undev: '$session' is not a tmux-session workspace"
+    return 1
+  fi
+  rm -f "/tmp/workspace-state-${session}.json" "/tmp/workspace-tui-cmd-${session}"
+  tmux kill-session -t "$session"
+}
+
 export NVM_DIR=~/.nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
