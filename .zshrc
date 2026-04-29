@@ -77,6 +77,7 @@ alias ff='git diff'
 alias ss='git diff --staged'
 alias ll='ls -alh'
 alias dev='~/src/dotfiles/tmux-session/launch.sh'
+alias pr='gh pr view --web'
 
 # `undev`: kill the current tmux-session workspace. Only works inside one.
 undev() {
