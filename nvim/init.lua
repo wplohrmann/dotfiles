@@ -1,5 +1,15 @@
 require("config.lazy")
 
+-- Per-tmux-session RPC socket so EditInGhostty.app can route clicks here
+if vim.env.TMUX then
+    local session = vim.fn.system({'tmux', 'display-message', '-p', '#S'}):gsub('%s+$', '')
+    if session ~= '' then
+        local sock = '/tmp/nvim-' .. session .. '.sock'
+        os.remove(sock)
+        pcall(vim.fn.serverstart, sock)
+    end
+end
+
 -- Settings
 vim.opt.hlsearch = false
 vim.opt.ignorecase = true
