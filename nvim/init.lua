@@ -90,6 +90,20 @@ vim.lsp.config['clangd'] = {
 }
 vim.lsp.enable('clangd')
 
+vim.lsp.config['rust_analyzer'] = {
+  cmd = { 'rust-analyzer' },
+  filetypes = { 'rust' },
+  root_markers = { 'Cargo.toml', 'Cargo.lock', 'rust-project.json', '.git' },
+  settings = {
+    ['rust-analyzer'] = {
+      cargo = { allFeatures = true },
+      checkOnSave = true,
+      check = { command = 'clippy' },
+    },
+  },
+}
+vim.lsp.enable('rust_analyzer')
+
 
 vim.api.nvim_create_autocmd('FileType', {
   pattern = { 'python', 'lua', 'json', 'toml', 'rust', 'c', 'cpp' },
