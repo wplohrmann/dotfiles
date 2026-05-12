@@ -5,6 +5,6 @@ keybind = cmd+p=text:\x10
 keybind = cmd+/=text:\x1f
 keybind = cmd+f=text:\x06
 
-# Tab navigation (Cmd+Opt+Left/Right → Ctrl+Alt+Left/Right sequences for tmux)
-keybind = cmd+opt+left=text:\x1b[1;7D
-keybind = cmd+opt+right=text:\x1b[1;7C
+# Tab navigation
+keybind = cmd+opt+left=previous_tab
+keybind = cmd+opt+right=next_tab
