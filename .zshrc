@@ -103,3 +103,8 @@ export NVM_DIR=~/.nvm
 . "$HOME/.local/bin/env"
 
 export PATH="$HOME/.cargo/bin:$PATH"
+
+# ncb shell completion
+if command -v ncb >/dev/null 2>&1; then
+  eval "$(ncb completions zsh)"
+fi
