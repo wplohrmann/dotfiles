@@ -37,3 +37,5 @@ Personal dotfiles for Will Lohrmann. No install scripts — files are symlinked 
 **Zsh** (`.zshrc`): oh-my-zsh with robbyrussell theme; plugins: git, fzf. Key aliases: `vim`→nvim, `gg`→git status, `ff`→git diff, `ss`→git diff --staged. Custom functions: `vimgrep`, `vimdiff`, `vimresolve` open matched/changed/conflicted files in editor.
 
 **Tmux** (`.tmux.conf`): mouse on, vi copy-mode, 50k history, yank to clipboard via xclip.
+
+**cmux** (`cmux.json`): symlinked to `~/.config/cmux/cmux.json`. Reload with `cmux reload-config` after editing.
