@@ -100,7 +100,7 @@ export NVM_DIR=~/.nvm
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
 
-. "$HOME/.local/bin/env"
+export PATH="$HOME/.local/bin:$PATH"
 
 export PATH="$HOME/.cargo/bin:$PATH"
 
