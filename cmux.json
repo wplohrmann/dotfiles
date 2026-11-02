@@ -194,4 +194,48 @@
   //       "showNotifications" : "cmd+i"
   //     }
   //   },
+  "shortcuts": {
+    "bindings": {
+      "nextSurface": "cmd+opt+→",
+      "prevSurface": "cmd+opt+←",
+      "nextSidebarTab": "cmd+opt+↓",
+      "prevSidebarTab": "cmd+opt+↑",
+      "focusRight": {
+        "first": {
+          "command": false,
+          "control": false,
+          "key": "",
+          "option": false,
+          "shift": false
+        }
+      },
+      "focusLeft": {
+        "first": {
+          "command": false,
+          "control": false,
+          "key": "",
+          "option": false,
+          "shift": false
+        }
+      },
+      "focusUp": {
+        "first": {
+          "command": false,
+          "control": false,
+          "key": "",
+          "option": false,
+          "shift": false
+        }
+      },
+      "focusDown": {
+        "first": {
+          "command": false,
+          "control": false,
+          "key": "",
+          "option": false,
+          "shift": false
+        }
+      }
+    }
+  },
 }
