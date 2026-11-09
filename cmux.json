@@ -194,6 +194,14 @@
   //       "showNotifications" : "cmd+i"
   //     }
   //   },
+  "browser": {
+    "openTerminalLinksInCmuxBrowser": false,
+    "interceptTerminalOpenCommandInCmuxBrowser": false
+  },
+  "sidebar": {
+    "openPullRequestLinksInCmuxBrowser": false,
+    "openPortLinksInCmuxBrowser": false
+  },
   "shortcuts": {
     "bindings": {
       "nextSurface": "cmd+opt+→",
